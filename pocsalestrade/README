@@ -1,0 +1,46 @@
+The idea is to have MessageProcessing class check and process fundamental message rules.
+
+The Messages input, is a string of keyword=value # separator.
+
+The Transaction class would be a family of Transactions. The generic transaction just a parent for 
+the actual classes, Transaction Sale, Transaction Adjustment. 
+The class Transaction Single sale is a specific class to indicate the sale without 
+the qty specified and is a child of Transaction Sale with one less parameter specified.
+The TransactionAdj class is a child of transactionSingleSale with adjustment parameters added
+
+Assumption: Sale with Adjustment, it is assumed the adjustment only applies to existing sales, not current one.
+
+SaleRecord, SaleModifier are sub records created from the transaction objects. Although it is 
+just as efficient to keep the transaction records as sales/adjustment records, the specification 
+could be interpreted to have a requirement to separate the sales and transaction information.
+
+When an adjustment is entered, the original sales transaction is copied into a history list of the sales transaction
+values are updated in the main entry. Along with the historical transaction, a link to the adjustment
+action is kept for reporting purposes.
+
+MessageTypes acts as an mapping between the Message class and Transaction class, returning a specific
+transaction class depending on the message received. This is to allow the correct class procedure to 
+be called.
+
+The message processing from an external source, is currently in the Main loop, which will currently
+retrieve a message from stdin and pass it on to the MessageProcess class then onto the SalesRecord class.
+Transaction object acting as an intermediate object.
+
+The SalesRecords object is holding the Transactions (in this case only the sale types) as a linked list.
+At this present time it is a linked list for the simplicity.
+
+The SaleRecord class currently handles Subtraction, Multiplication and Addition. 
+It currently does not handle other types such as percentage changes etc, but can easily be expanded to. 
+
+ProductList and Product, the definition of the products is stored here. It is a fixed list, but it is assumed
+that some sort of common list is required for the this application and external application. However
+if this assumption is incorrect then this could be removed and the program continue to work using
+int or text as the product type without limitations.
+For complying strictly with the specification, a boolean disable check has been applied. However 
+it is assumed some sort of limits would apply.
+
+Logging is currently a class but is all to stdout for this exercise.
+
+Adjustments and Multiple sales were deliberately kept in single transactions to mirror what was received.
+
+Transaction object also holds selected limit for data ranges. 
