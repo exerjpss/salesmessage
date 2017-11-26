@@ -1,0 +1,143 @@
+Preamble:
+
+I expect the following objects
+
+saleitem object,
+messageitem object,
+productitem object.
+salelist object,
+messagelist object,
+
+a log object - to log messages
+a output obbject - to output messages
+a input object - to acquire input
+
+* I realise product object can be unlimited. But the message
+* is coming from an external source and to avoid mistakes, or
+* exposures I would expect there to be some limitation of sorts.
+
+For now the product object will be passing everything
+
+========================================
+
+The model will be based on a standard MVC approach. 
+The output/input layer seperated from the logic layer.
+
+========================================
+
+Messages will text based, but arbritralily limited to 1024 characters.
+To avoid unpexected input.
+
+========================================
+
+Main will be the entry point to the system
+
+========================================
+
+Create a saleitem object
+	Test object can be created with correct values
+	
+Create a productitem object : Purpose is to hold a map of strings to int, and for possible future verification
+of items.
+	Test object can add an item, and retrieve case insensitive products
+	
+Create a salelist object to hold sale items
+	Test add two objects and check items are there
+
+Create a messageitem object to hold information about messages
+	Test set message
+	Test process message (returns ok)
+	
+Create a transaction interface, for sales (and adjustments)
+Create a transactionfactory to generate saleitem (and adjustmentitem)
+	Test saleItem generation
+refactor create transaction interface : Make adjustment and saleitem implement transaction
+	
+Create a adjustment class (blank)
+
+messageitem object, process sale and check saleitem generated
+	transaction interface expanded to include addparameters and getValid 
+
+saleitem implement addParameters and getValid	
+	test addParameters				
+
+messageitem sets a list of transactions given a message
+			
+messageitem Test process message, and confirm type of messages are stored as expected
+messageitem Test multiple valid process message, and confirm type of messages are stored as expected
+messageitem Test two valid and one invalid message, and confirm type of messages are stored as expected
+	Message is a string, seperated by # 
+	
+	
+test message type2 for multiple sales specified
+    adjust sales class to include number of sales, default =1	
+    modifiy saleitem tests and message tests to include check of qty
+	
+Test adjustment generation
+Test random, blank and null return null;
+	
+Test adjustment addparameters
+	Thinking this is a saleitem + adjustment type + adjustment amount
+	adjustment type could be a saleitem with adjustment type 0 for default saleitem, and others 1-3
+	or adjustment type could be an extension of sale
+	or as currently a parallel object with transaction interface (using this model for now)
+	
+	Message 3 = TYPE=SALE#PRODUCT=COLA#AMOUNT=20#TYPE=ADJUSTMENT#PRODUCT=JUICE#ADJUSTAMOUNT=10#ADJUSTMENTTYPE=ADD/MULT/SUB
+	
+	Refactored productItem as a base class for adjustment and saleitem
+		testProductItem
+	NB Product should have default methods (java8), should get product out of other objects
+	
+Test process with adjustment string
+Test process with multiple adjustment strings
+Test process with mixed adjustment strings
+Test process with Sale and Adjustment string	
+		
+		
+Test can add three received messages in list (valid or invalid)		
+	Create a messageList object to hold a list of received messages
+
+************************************************************************
+*** So far no limits to products, to amounts have been defined
+*** the same for adjustment values
+*** currently the only assumption made is int is fine
+*** are negative numbers acceptable?
+*** are numbers less than one acceptable?
+*** Going with TDD and just implementing what is required
+************************************************************************
+
+Test process message item on sales list
+	Create message add sales
+	Create message add multiple sales
+	Create message 3 (sale+adj)
+
+Test salelist add saleitem object
+
+Test adjustment transaction onto a sale
+Test multiple adjustment transactions onto a sale
+
+Test adjustment via saleslist
+Test adjustment transaction onto a sale via messages
+Test salelist processing messageslist
+Test saleitem has history of adjustments
+
+NOTE: Not clear if adjustment applies to salesrecord present or only to existing ones
+for this applying to any sales added
+
+Test retrieve list of sales, product name/product amount/product qty
+Test history product name/product amount/action
+
+Test salelist sortlist (to allow summary report)
+
+create InterfaceSalesOutput output
+create InterfaceAdjustmentOutput
+
+Create main
+Create a loop to process multiple messages
+Create an output
+Create an interface for output
+Create a report
+
+
+
+
